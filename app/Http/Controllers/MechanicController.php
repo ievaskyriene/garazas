@@ -15,8 +15,6 @@ class MechanicController extends Controller
     public function index()
     {
         $mechanics = Mechanic::orderBy('name')->orderBy('surname')->limit(29)->get();
-        // $mechanics = Mechanic::all()->sortBy('name');
-        // $mechanics = Mechanic::all()->sortBy('name')->sortBy('surname');
 
        return view('mechanic.index', ['mechanics' => $mechanics]);
     }
@@ -40,12 +38,9 @@ class MechanicController extends Controller
     public function store(Request $request) //requesto objektas, kuriame yra visi duomenys, kuriuos gali tik narsykle siusti. Pries paleidzian sita meoda ji yra reflektinamas - tiriamas - ziuri, kokiu praso aargumentu. siuo atveju mums reikia ideti duomenus, todel iesko requesto
     {
         $mechanic = new Mechanic;
-        
         $mechanic->name = $request->mechanic_name;
         $mechanic->surname = $request->mechanic_surname;
         $mechanic->portret = '';
-
-        // dd($request->file('portret')->getClientOriginalName());
 
         if ($request->hasFile('portret')) {
             $image = $request->file('portret');
@@ -54,9 +49,6 @@ class MechanicController extends Controller
             $image->move($destinationPath, $name);
             $mechanic->portret = $name;
         }
-
-        
-
 
         $mechanic->save();
         return redirect()->route('mechanic.index');
@@ -109,7 +101,6 @@ class MechanicController extends Controller
         }
 
         $mechanic->save();
-       
         return redirect()->route('mechanic.index')->with('success_message', 'Sėkmingai pakeistas.');
     }
     /**
@@ -122,11 +113,9 @@ class MechanicController extends Controller
     {
         if($mechanic->mechanicTrucks->count()){
             return redirect()->route('mechanic.index')->with('alert_message', 'Turi '.$mechanic->mechanicTrucks->count().' sunkvezimius, trinti negalima'); 
-            
         }
 
         $mechanic->delete();
-    
         return redirect()->route('mechanic.index')->with('success_message', 'Sekmingai ištrintas.');
 
     }
