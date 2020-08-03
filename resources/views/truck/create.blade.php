@@ -10,9 +10,9 @@
                <div class="card-header">PAVADINIMAS</div>
                <div class="card-body">
                 <form method="POST" action="{{route('truck.store')}}">
-                    Maker: <input type="text" name="truck_maker">
-                    Plate: <input type="text" name="truck_plate">
-                    Make_year: <input type="number" name="truck_make_year">
+                    Maker: <input type="text" name="truck_maker" value = "{{old('truck_maker')}}">
+                    Plate: <input type="text" name="truck_plate" value = "{{old('truck_plate')}}">
+                    Make_year: <input type="number" name="truck_make_year" value = "{{old('truck_make_year')}}">
                     Mechanic_notices: <textarea name="mechanic_notices" id="summernote"></textarea>
                     <select name="mechanic_id">
                         @foreach ($mechanics as $mechanic)

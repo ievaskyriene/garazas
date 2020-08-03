@@ -7,7 +7,6 @@
            <div class="card">
                <div class="card-header">{{$truck->maker}} {{$truck->plate}}</div>
                <div class="card-body">
-                   
                     Priziuri: {{$truck->truckMechanic->name}} {{$truck->truckMechanic->surname}} <br>
                     <div class="form-group">
                         Pagaminimo metai: {{$truck->make_year}}

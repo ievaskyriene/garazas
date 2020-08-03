@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mechanic;
+use Validator;
 use Illuminate\Http\Request;
 
 class MechanicController extends Controller
@@ -37,6 +38,23 @@ class MechanicController extends Controller
      */
     public function store(Request $request) //requesto objektas, kuriame yra visi duomenys, kuriuos gali tik narsykle siusti. Pries paleidzian sita meoda ji yra reflektinamas - tiriamas - ziuri, kokiu praso aargumentu. siuo atveju mums reikia ideti duomenus, todel iesko requesto
     {
+        $validator = Validator::make($request->all(),
+        [
+            'mechanic_name' => ['required', 'min:3', 'max:64'],
+            'mechanic_surname' => ['required', 'min:3', 'max:64'],
+        ],
+            [
+            'mechanic_name.min' => 'Įveskite teisingą vardą',
+            'mechanic_surname.min' => 'Įveskite teisingą pavardę'
+            ]
+                    );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+            // return redirect()->back();
+        }
+ 
+
         $mechanic = new Mechanic;
         $mechanic->name = $request->mechanic_name;
         $mechanic->surname = $request->mechanic_surname;
@@ -99,7 +117,10 @@ class MechanicController extends Controller
             $image->move($destinationPath, $name);
             $mechanic->portret = $name;
         }
-
+        else {
+        return redirect()->route('mechanic.index')->with('success_message', 'Sėkmingai pakeistas.');
+        }
+        
         $mechanic->save();
         return redirect()->route('mechanic.index')->with('success_message', 'Sėkmingai pakeistas.');
     }
